@@ -5,9 +5,10 @@
 #include <fstream>
 #include <sys/stat.h>
 
-/**
- * Enumeration of known file types.
-*/
+/*!
+ * \enum file_type
+ * \brief The file_type enum
+ */
 enum file_type {
     JPEG
 };
