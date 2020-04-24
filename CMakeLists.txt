@@ -13,6 +13,9 @@ file(GLOB SOURCE_FILES ${filesteg_SOURCE_DIR}/src/*.cpp)
 
 include_directories(${filesteg_SOURCE_DIR}/lib)
 
+add_compile_options("-Wall")
+add_compile_options("-Wextra")
+
 if(MINGW OR WIN32)
     link_libraries(-static-libgcc -static-libstdc++)
     link_libraries(-static pthread)
