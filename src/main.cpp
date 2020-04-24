@@ -3,14 +3,37 @@
 #include <fstream>
 #include <string>
 #include <regex>
+#include <vector>
 
 #include "fileobj.hpp"
+#include "cmdparse.hpp"
 /*!
   * \file main.cpp
   * \brief main program file
   *
   * Contains the main function
 */
+
+struct options {
+    bool verbose = false;
+};
+struct options opt;
+
+class verbose_cout: public std::ostream
+{
+public:
+    verbose_cout() {}
+    verbose_cout(std::streambuf *sbuf) : std::ios(sbuf), std::ostream(sbuf) {}
+    verbose_cout(verbose_cout &&other) : verbose_cout(other.rdbuf()) {}
+};
+
+verbose_cout vcout()
+{
+    if(opt.verbose)
+        return verbose_cout(std::cout.rdbuf());
+    else
+        return verbose_cout();
+}
 
 /*!
  * \enum handler_return
@@ -42,7 +65,7 @@ enum handler_return {
 */
 int handler(int const &argc, char *const *argv)
 {
-    if(argc < 3)
+    if(argc < 3 && true == false)
     {
 #ifdef CONFIG__ALLOW_INTERACTIVE
         bool interactive = true;
@@ -84,20 +107,27 @@ int handler(int const &argc, char *const *argv)
 #endif
     }
 
-    FileObj file(argv[2]);
+    std::vector<cmdparse::arg>       arguments;
+    std::vector<cmdparse::arg_match> received_arguments;
 
-    if(strcmp(argv[1], "check"))
+    arguments.push_back(cmdparse::arg{.name = "verbose", .description = "", .required = false, .takes_parameter = true, .shortOption = "v", .longOption = "verbose"});
+
+    received_arguments = cmdparse::parse(argc, argv, arguments);
+
+    for(auto elem: received_arguments)
     {
-        file.check_for_hidden_data(JPEG);
+        if(elem.option_name == "verbose")
+            opt.verbose = true;
     }
 
-    if(strcmp(argv[1], "exatract"))
+    if(opt.verbose)
     {
-
-    }
-    else if(strcmp(argv[1], "quit"))
-    {
-        return PROG_QUIT;
+        for(auto elem: received_arguments)
+        {
+            vcout() << "Given parameter: " << elem.option_name            << "\n"
+                    << "Valid          : " << (elem.valid ? "yes" : "no") << "\n"
+                    << "Caught argument: " << (elem.caught_argument == "" ? "NONE" : elem.caught_argument) << "\n\n";
+        }
     }
 
     return 0;
@@ -105,7 +135,6 @@ int handler(int const &argc, char *const *argv)
 
 int main(int argc, char *argv[])
 {
-
 #ifdef DEBUG__SHOW_STAT_INFO
     struct stat test;
     stat(argv[0], &test);
