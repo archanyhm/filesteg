@@ -25,6 +25,11 @@ namespace cmdparse
         bool        valid;
     };
 
+    struct argv_meta {
+        std::string value;
+        bool        identified = false;
+    };
+
     std::vector<cmdparse::arg_match> parse(const int &argc, char *const argv[], const std::vector<cmdparse::arg> &possible_args);
 }
 
