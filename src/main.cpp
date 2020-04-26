@@ -14,8 +14,16 @@
   * Contains the main function
 */
 
+enum operation_modes {
+    MODE_EMPTY,
+    MODE_EXTRACT,
+    MODE_INJECT,
+};
+
 struct options {
     bool verbose = false;
+    int  mode    = 0;
+
 };
 struct options opt;
 
@@ -110,7 +118,9 @@ int handler(int const &argc, char *const *argv)
     std::vector<cmdparse::arg>       arguments;
     std::vector<cmdparse::arg_match> received_arguments;
 
-    arguments.push_back(cmdparse::arg{.name = "verbose", .description = "", .required = false, .takes_parameter = true, .shortOption = "v", .longOption = "verbose"});
+    arguments.push_back(cmdparse::arg{.name = "verbose", .description = "", .required = false, .takes_parameter = false, .shortOption = 'v', .longOption = "verbose"});
+    arguments.push_back(cmdparse::arg{.name = "file", .description = "", .required = true, .takes_parameter = true, .longOption = "file"});
+    arguments.push_back(cmdparse::arg{.name = "extract", .description = "", .required = false, .takes_parameter = false, .shortOption = 'e', .longOption = "extract"});
 
     received_arguments = cmdparse::parse(argc, argv, arguments);
 
@@ -118,6 +128,12 @@ int handler(int const &argc, char *const *argv)
     {
         if(elem.option_name == "verbose")
             opt.verbose = true;
+        if(elem.option_name == "mode")
+        {
+            if(elem.caught_argument == "extract")
+                opt.mode = MODE_EXTRACT;
+        }
+
     }
 
     if(opt.verbose)
