@@ -15,16 +15,21 @@ enum file_type {
 
 class FileObj
 {
-public:
+public:    
     FileObj(std::string file_path);
+    FileObj();
     ~FileObj();
+
+    bool set_file(std::string file_path);
 
     bool check_for_hidden_data(file_type f);
     bool extract(std::string outfile);
 
-private:
+private:    
     std::string     t_file_path;
     std::ifstream   t_input_stream;
+
+    bool            valid_file;
     struct stat     sb_in;
 };
 

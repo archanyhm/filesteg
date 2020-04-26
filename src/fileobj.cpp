@@ -4,18 +4,12 @@
 
 FileObj::FileObj(std::string file_path)
 {
-    this->t_file_path    = file_path;
-    this->t_input_stream.open(t_file_path);
+    this->set_file(file_path);
+}
 
-    if(!t_input_stream.is_open())
-    {
-        std::cerr << "File doesn't exist or isn't readable" << std::endl;
-        t_input_stream.close();
-        t_file_path = "";
-        return;
-    }
+FileObj::FileObj()
+{
 
-    stat(t_file_path.c_str(), &sb_in);
 }
 
 FileObj::~FileObj()
@@ -23,8 +17,32 @@ FileObj::~FileObj()
     t_input_stream.close();
 }
 
+bool FileObj::set_file(std::string file_path)
+{
+    this->t_input_stream.open(file_path);
+
+    if(!t_input_stream.is_open())
+    {
+        std::cerr << "File doesn't exist or isn't readable" << std::endl;
+        this->t_input_stream.close();
+        this->t_file_path = "";
+        return false;
+    }
+    else
+    {
+        this->t_file_path = file_path;
+        stat(t_file_path.c_str(), &sb_in);
+        this->valid_file = true;
+
+        return true;
+    }
+}
+
 bool FileObj::check_for_hidden_data(file_type f)
 {
+    if(!this->valid_file)
+        return false;
+
     uint8_t magic_number[2];
     switch(f)
     {
@@ -76,6 +94,9 @@ bool FileObj::check_for_hidden_data(file_type f)
 
 bool FileObj::extract(std::string outfile = "")
 {
+    if(!this->valid_file)
+        return false;
+
     if(outfile == "")
     {
         outfile = std::regex_replace(this->t_file_path, std::regex(".jpg"), ".dat");
