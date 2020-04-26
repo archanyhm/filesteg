@@ -120,7 +120,7 @@ int handler(int const &argc, char *const *argv)
 
     arguments.push_back(cmdparse::arg{.name = "verbose", .description = "", .required = false, .takes_parameter = false, .shortOption = 'v', .longOption = "verbose"});
     arguments.push_back(cmdparse::arg{.name = "file", .description = "", .required = true, .takes_parameter = true, .longOption = "file"});
-    arguments.push_back(cmdparse::arg{.name = "mode", .description = "", .required = false, .takes_parameter = false, .longOption = "mode"});
+    arguments.push_back(cmdparse::arg{.name = "mode", .description = "", .required = false, .takes_parameter = true, .longOption = "mode"});
 
     received_arguments = cmdparse::parse(argc, argv, arguments);
 
