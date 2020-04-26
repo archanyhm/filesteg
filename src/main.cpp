@@ -16,13 +16,16 @@
 
 enum operation_modes {
     MODE_EMPTY,
+    MODE_CHECK,
     MODE_EXTRACT,
     MODE_INJECT,
 };
 
 struct options {
-    bool verbose = false;
-    int  mode    = 0;
+    bool verbose          = false;
+    int  mode             = 0;
+
+    std::string file_path = "";
 
 };
 struct options opt;
@@ -60,6 +63,7 @@ enum handler_return {
     PROG_QUIT = -1,
     PROG_PASS = 0,
     PROG_ERR_NOT_ENOUGH_ARGUMENTS = 1,
+    PROG_ERR_FILE_NOT_FOUND = 404,
 };
 
 
@@ -83,7 +87,7 @@ int handler(int const &argc, char *const *argv)
         std::cin >> file_path;
 
         FileObj file(file_path);
-
+u
         while(interactive)
         {
             std::string input;
@@ -128,22 +132,55 @@ int handler(int const &argc, char *const *argv)
     {
         if(elem.option_name == "verbose")
             opt.verbose = true;
-        if(elem.option_name == "mode")
+        else if(elem.option_name == "mode")
         {
+            if(elem.caught_argument == "check")
+                opt.mode = MODE_CHECK;
             if(elem.caught_argument == "extract")
                 opt.mode = MODE_EXTRACT;
         }
-
+        else if(elem.option_name == "file")
+        {
+            struct stat sb;
+            if(stat(elem.caught_argument.c_str(), &sb) == -1)
+            {
+                std::cerr << "File not found, aborting..." << std::endl;
+                return PROG_ERR_FILE_NOT_FOUND;
+            }
+            else
+            {
+                vcout() << "File path appears to be valid" << "\n";
+                opt.file_path = elem.caught_argument;
+            }
+        }
     }
 
-    if(opt.verbose)
+    FileObj fob;
+
+    if(opt.verbose && true == false)
     {
         for(auto elem: received_arguments)
         {
-            vcout() << "Given parameter: " << elem.option_name            << "\n"
-                    << "Valid          : " << (elem.valid ? "yes" : "no") << "\n"
+            vcout() << "Given parameter: " << elem.option_name                                             << "\n"
+                    << "Valid          : " << (elem.valid ? "yes" : "no")                                  << "\n"
                     << "Caught argument: " << (elem.caught_argument == "" ? "NONE" : elem.caught_argument) << "\n\n";
         }
+    }
+
+    switch(opt.mode)
+    {
+    case MODE_EMPTY:
+        break;
+    case MODE_CHECK:
+        vcout() << "Given mode is: " << opt.mode << "\n";
+        fob.set_file(opt.file_path);
+        fob.check_for_hidden_data(JPEG);
+        break;
+    case MODE_EXTRACT:
+        break;
+    default:
+        break;
+
     }
 
     return 0;
