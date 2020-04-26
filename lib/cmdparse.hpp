@@ -14,7 +14,7 @@ namespace cmdparse
         bool        required        = false;
         bool        takes_parameter = true;
 
-        std::string shortOption;
+        char        shortOption;
         std::string longOption;
     };
 
