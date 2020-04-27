@@ -23,7 +23,7 @@ public:
     bool set_file(std::string file_path);
 
     bool check_for_hidden_data(file_type f);
-    bool extract(std::string outfile);
+    bool extract(std::string outfile = "");
 
 private:    
     std::string     t_file_path;

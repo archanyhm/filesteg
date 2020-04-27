@@ -92,7 +92,7 @@ bool FileObj::check_for_hidden_data(file_type f)
     return false;
 }
 
-bool FileObj::extract(std::string outfile = "")
+bool FileObj::extract(std::string outfile)
 {
     if(!this->valid_file)
         return false;
