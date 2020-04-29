@@ -92,7 +92,7 @@ bool FileObj::check_for_hidden_data(file_type f)
     return false;
 }
 
-bool FileObj::extract(std::string outfile)
+bool FileObj::extract(bool overwrite, std::string outfile)
 {
     if(!this->valid_file)
         return false;
@@ -104,7 +104,7 @@ bool FileObj::extract(std::string outfile)
 
     struct stat sb_out;
 
-    if(stat(outfile.c_str(), &sb_out) == 0)
+    if(stat(outfile.c_str(), &sb_out) == 0 && !overwrite)
     {
         std::cerr << "Outfile already exists." << std::endl;
         return false;
@@ -122,5 +122,5 @@ bool FileObj::extract(std::string outfile)
         output_stream.put(this->t_input_stream.get());
     }
 
-    return false;
+    return true;
 }
