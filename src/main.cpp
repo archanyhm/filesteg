@@ -177,6 +177,9 @@ u
         fob.check_for_hidden_data(JPEG);
         break;
     case MODE_EXTRACT:
+        vcout() << "Given mode is: " << opt.mode << "\n";
+        fob.set_file(opt.file_path);
+        fob.extract(false);
         break;
     default:
         break;
