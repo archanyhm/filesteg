@@ -159,18 +159,18 @@ int handler(int const &argc, char *const *argv) {
     }
   }
 
-  if(opt.mode != MODE_EMPTY)
+  if(opt.mode != MODE_EMPTY) {
     vcout() << "Given mode is:" << opt.mode << "\n";
+    fob.set_file(opt.file_path);
+  }
 
   switch (opt.mode) {
   case MODE_EMPTY:
     break;
   case MODE_CHECK:
-    fob.set_file(opt.file_path);
     fob.check_for_hidden_data(JPEG);
     break;
   case MODE_EXTRACT:
-    fob.set_file(opt.file_path);
     fob.extract(false);
     break;
   default:
