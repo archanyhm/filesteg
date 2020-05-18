@@ -17,6 +17,8 @@ public:
   FileObj();
   ~FileObj();
 
+  bool is_verbose = false;
+
   bool set_file(std::string file_path);
 
   bool check_for_hidden_data(file_type f);
