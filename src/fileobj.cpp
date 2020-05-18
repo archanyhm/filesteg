@@ -38,6 +38,7 @@ bool FileObj::check_for_hidden_data(file_type f) {
   }
 
   if (this->t_input_stream.is_open()) {
+    t_input_stream.seekg(0, t_input_stream.beg);
     char readBuf = 0;
     std::streamoff EOI_pos = 0;
 
