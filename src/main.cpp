@@ -49,6 +49,9 @@ verbose_cout vcout() {
  *
  * \var handler_return::PROG_ERR_NOT_ENOUGH_ARGUMENTS
  * Indicates that the user didn't supply enough arguments to the program.
+ *
+ * \var handler_return::PROG_ERR_FILE_NOT_FOUND
+ * Indicates that the program couldn't locate (or access) the given file.
  */
 enum handler_return {
   PROG_QUIT = -1,
