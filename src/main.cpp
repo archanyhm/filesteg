@@ -148,7 +148,7 @@ int handler(int const &argc, char *const *argv) {
 
   FileObj fob;
 
-  if (opt.verbose && true == false) {
+  if (opt.verbose) {
     for (auto elem : received_arguments) {
       vcout() << "Given parameter: " << elem.option_name << "\n"
               << "Valid          : " << (elem.valid ? "yes" : "no") << "\n"
