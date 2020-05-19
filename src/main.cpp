@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "cmdparse.hpp"
+#include "verbose_cout.hpp"
 #include "fileobj.hpp"
 /*!
  * \file main.cpp
@@ -28,13 +29,6 @@ struct options {
   std::string file_path = "";
 };
 struct options opt;
-
-class verbose_cout : public std::ostream {
-public:
-  verbose_cout() {}
-  verbose_cout(std::streambuf *sbuf) : std::ios(sbuf), std::ostream(sbuf) {}
-  verbose_cout(verbose_cout &&other) : verbose_cout(other.rdbuf()) {}
-};
 
 verbose_cout vcout() {
   if (opt.verbose)
