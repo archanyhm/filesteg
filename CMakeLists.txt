@@ -8,8 +8,19 @@ project(filesteg
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-file(GLOB HEADER_FILES CONFIGURE_DEPENDS ${filesteg_SOURCE_DIR}/lib/*.hpp)
-file(GLOB SOURCE_FILES ${filesteg_SOURCE_DIR}/src/*.cpp)
+set(
+    SOURCE_FILES
+    "src/main.cpp"
+    "src/cmdparse.cpp"
+    "src/fileobj.cpp"
+    )
+set(
+    HEADER_FILES
+    "lib/cmdparse.hpp"
+    "lib/fileobj.hpp"
+    "lib/verbose_cout.hpp"
+    )
+
 
 include_directories(${filesteg_SOURCE_DIR}/lib)
 
