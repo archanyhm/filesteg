@@ -21,6 +21,7 @@ set(
     "lib/verbose_cout.hpp"
     )
 
+add_subdirectory("lib/modules")
 
 include_directories(${filesteg_SOURCE_DIR}/lib)
 
