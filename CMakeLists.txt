@@ -11,19 +11,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(
     SOURCE_FILES
     "src/main.cpp"
-    "src/cmdparse.cpp"
-    "src/fileobj.cpp"
     )
 set(
     HEADER_FILES
-    "lib/cmdparse.hpp"
-    "lib/fileobj.hpp"
-    "lib/verbose_cout.hpp"
     )
 
-add_subdirectory("lib/modules")
-
-include_directories(${filesteg_SOURCE_DIR}/lib)
+add_subdirectory("lib")
 
 add_compile_options("-Wall")
 add_compile_options("-Wextra")
@@ -47,6 +40,7 @@ endif()
 
 add_executable(filesteg ${SOURCE_FILES} ${HEADER_FILES})
 
+target_link_libraries (filesteg PUBLIC common)
 target_link_libraries (filesteg PUBLIC modules)
 
 source_group(TREE "${filesteg_SOURCE_DIR}/lib" PREFIX "Header Files" FILES ${HEADER_FILES})
