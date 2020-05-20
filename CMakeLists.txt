@@ -47,5 +47,7 @@ endif()
 
 add_executable(filesteg ${SOURCE_FILES} ${HEADER_FILES})
 
+target_link_libraries (filesteg PUBLIC modules)
+
 source_group(TREE "${filesteg_SOURCE_DIR}/lib" PREFIX "Header Files" FILES ${HEADER_FILES})
 source_group(TREE "${filesteg_SOURCE_DIR}/src" PREFIX "Source Files" FILES ${SOURCE_FILES})
