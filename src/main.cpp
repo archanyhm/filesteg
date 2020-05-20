@@ -165,7 +165,7 @@ int handler(int const &argc, char *const *argv) {
   case MODE_EMPTY:
     break;
   case MODE_CHECK:
-    fob.check_for_hidden_data(JPEG);
+    fob.check_for_hidden_data();
     break;
   case MODE_EXTRACT:
     fob.extract(false);

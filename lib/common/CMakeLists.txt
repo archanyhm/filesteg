@@ -1,0 +1,10 @@
+add_subdirectory("return_types")
+add_subdirectory("CMDParse")
+add_subdirectory("FileObj")
+add_subdirectory("verbose_cout")
+
+add_library(common INTERFACE)
+target_link_libraries(common INTERFACE return_types)
+target_link_libraries(common INTERFACE CMDParse)
+target_link_libraries(common INTERFACE FileObj)
+target_link_libraries(common INTERFACE verbose_cout)

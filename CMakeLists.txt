@@ -8,10 +8,15 @@ project(filesteg
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-file(GLOB HEADER_FILES CONFIGURE_DEPENDS ${filesteg_SOURCE_DIR}/lib/*.hpp)
-file(GLOB SOURCE_FILES ${filesteg_SOURCE_DIR}/src/*.cpp)
+set(
+    SOURCE_FILES
+    "src/main.cpp"
+    )
+set(
+    HEADER_FILES
+    )
 
-include_directories(${filesteg_SOURCE_DIR}/lib)
+add_subdirectory("lib")
 
 add_compile_options("-Wall")
 add_compile_options("-Wextra")
@@ -34,6 +39,9 @@ endif()
 ## --------------------------------------- ##
 
 add_executable(filesteg ${SOURCE_FILES} ${HEADER_FILES})
+
+target_link_libraries (filesteg PUBLIC common)
+target_link_libraries (filesteg PUBLIC modules)
 
 source_group(TREE "${filesteg_SOURCE_DIR}/lib" PREFIX "Header Files" FILES ${HEADER_FILES})
 source_group(TREE "${filesteg_SOURCE_DIR}/src" PREFIX "Source Files" FILES ${SOURCE_FILES})
