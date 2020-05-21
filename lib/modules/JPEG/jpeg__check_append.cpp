@@ -41,7 +41,7 @@ int check_for_appended_data(FileObj &fob) {
           if(i+1 < sizeof(read_buffer) - 1 && read_buffer[i+1] == EOI[1])
           {
             std::cout << "0xFF 0xD9 bytes found at offset " << read_bytes - 1 << std::endl;
-            EndOfImage_bytes_offset = read_bytes - 1;
+            EndOfImage_bytes_offset = read_bytes + 1;
             ++read_bytes;
             skipflag = true;
             break;
@@ -54,7 +54,7 @@ int check_for_appended_data(FileObj &fob) {
 
             if(temp_buffer == EOI[1]) {
               std::cout << "0xFF 0xD9 bytes found at offset " << read_bytes - 1 << std::endl;
-              EndOfImage_bytes_offset = read_bytes - 1;
+              EndOfImage_bytes_offset = read_bytes + 1;
               ++read_bytes;
               skipflag = true;
               break;
@@ -65,14 +65,14 @@ int check_for_appended_data(FileObj &fob) {
     }
   }
 
-  if (read_bytes >= fob.sb_in.st_size) {
+  if (EndOfImage_bytes_offset == fob.sb_in.st_size) {
     std::cout << "EOF reached. No appended data found." << std::endl;
     fob.t_filestream.close();
-    return FUNC_NO_MATCH;
+    return -1;
   } else {
-    std::cout << fob.sb_in.st_size - read_bytes
+    std::cout << fob.sb_in.st_size - EndOfImage_bytes_offset
               << " bytes exceeding the EOI found." << std::endl;
-    return FUNC_SUCCESS;
+    return EndOfImage_bytes_offset;
   }
 }}}
 
