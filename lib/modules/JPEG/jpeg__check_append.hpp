@@ -2,6 +2,7 @@
 #define JPEG__CHECK_APPEND_H
 
 #include "return_types.hpp"
+#include "jpeg__config.hpp"
 #include "fileobj.hpp"
 
 #include <fstream>

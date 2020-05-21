@@ -5,16 +5,10 @@
 #include <array>
 
 namespace filesteg { namespace JPEG {
+
 int check_for_appended_data(FileObj &fob) {
-
-  char EndOfImage_bytes[2];
-
-  EndOfImage_bytes[0] = 0xFF;
-  EndOfImage_bytes[1] = 0xD9;
-
   std::lock_guard<std::mutex> guard(fob.t_filestream_mutex);
 
-  //char read_buffer = 0;
   char read_buffer[64];
   bool skipflag = false;
   std::streamoff EndOfImage_bytes_offset = 0;
@@ -29,8 +23,6 @@ int check_for_appended_data(FileObj &fob) {
   if(!fob.t_filestream)
     return FUNC_INVALID_FILE;
 
-  EndOfImage_bytes_offset = fob.sb_in.st_size;
-
   /* Read until we encounter 0xFF. Then, check if the next byte is 0xD9 */
   while (fob.t_filestream) {
     fob.t_filestream.read(read_buffer, 64);
@@ -42,13 +34,14 @@ int check_for_appended_data(FileObj &fob) {
 
         std::cout << i << std::endl;
 
-        if(read_buffer[i] == EndOfImage_bytes[0])
+        if(read_buffer[i] == EOI[0])
         {
           std::cout << "0xFF byte found at offset " << read_bytes - 1 << std::endl;
 
-          if(i+1 < sizeof(read_buffer) - 1 && read_buffer[i+1] == EndOfImage_bytes[1])
+          if(i+1 < sizeof(read_buffer) - 1 && read_buffer[i+1] == EOI[1])
           {
             std::cout << "0xFF 0xD9 bytes found at offset " << read_bytes - 1 << std::endl;
+            EndOfImage_bytes_offset = read_bytes - 1;
             ++read_bytes;
             skipflag = true;
             break;
@@ -59,8 +52,9 @@ int check_for_appended_data(FileObj &fob) {
               break;
             }
 
-            if(temp_buffer == EndOfImage_bytes[1]) {
+            if(temp_buffer == EOI[1]) {
               std::cout << "0xFF 0xD9 bytes found at offset " << read_bytes - 1 << std::endl;
+              EndOfImage_bytes_offset = read_bytes - 1;
               ++read_bytes;
               skipflag = true;
               break;

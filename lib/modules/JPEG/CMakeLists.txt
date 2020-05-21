@@ -1,9 +1,13 @@
 set(
     JPEG_SOURCES
+    "jpeg__config.cpp"
+    "jpeg__identify.cpp"
     "jpeg__check_append.hpp"
     )
 set(
     JPEG_HEADERS
+    "jpeg__config.hpp"
+    "jpeg__identify.hpp"
     "jpeg__check_append.cpp"
     )
 
