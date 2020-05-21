@@ -3,12 +3,14 @@ set(
     "jpeg__config.cpp"
     "jpeg__identify.cpp"
     "jpeg__check_append.cpp"
+    "jpeg__append_payload.cpp"
     )
 set(
     JPEG_HEADERS
     "jpeg__config.hpp"
     "jpeg__identify.hpp"
     "jpeg__check_append.hpp"
+    "jpeg__append_payload.hpp"
     )
 
 add_library(JPEG ${JPEG_SOURCES} ${JPEG_HEADERS})
